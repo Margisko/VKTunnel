@@ -1,19 +1,33 @@
-name: VKTunnel # <-- Обязательное поле в самом начале файла!
+name: VKTunnel
 
 targets:
-  # Ваш главный таргет приложения (пример)
   VKTunnel:
     type: application
     platform: iOS
     deploymentTarget: "15.0"
     sources: [VKTunnel]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.vktunnel.app
+    entitlements:
+      path: VKTunnel/VKTunnel.entitlements
+      properties:
+        com.apple.developer.networking.networkextension:
+          - packet-tunnel
+    dependencies:
+      - target: PacketTunnel
 
-  # Таргет расширения
   PacketTunnel:
     type: app-extension
     platform: iOS
     deploymentTarget: "15.0"
     sources: [PacketTunnel]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.vktunnel.app.PacketTunnel
+    entitlements:
+      path: PacketTunnel/PacketTunnel.entitlements
+      properties:
+        com.apple.developer.networking.networkextension:
+          - packet-tunnel
     info:
       path: PacketTunnel/Info.plist
       properties:
