@@ -6,8 +6,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     private let queue = DispatchQueue(label: "com.vktunnel.provider")
     
     // Настройки VPS сервера
-    private let vpsHost: NWEndpoint.Host = "192.0.2.1"
-    private let vpsPort: NWEndpoint.Port = 51820
+    private let vpsHost: Network.NWEndpoint.Host = "192.0.2.1"
+    private let vpsPort: Network.NWEndpoint.Port = 51820
     private let channelId: UInt16 = 0x4000
 
     override func startTunnel(options: [String : NSObject]? = nil, completionHandler: @escaping (Error?) -> Void) {
