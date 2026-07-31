@@ -1,6 +1,7 @@
 name: VKTunnel
 options:
   bundlePrefix: com.vktunnel
+  minimumXcodeVersion: "15.0"
   deploymentTarget:
     iOS: "15.0"
 
