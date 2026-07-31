@@ -1,0 +1,28 @@
+name: VKTunnel
+options:
+  bundlePrefix: com.vktunnel
+  deploymentTarget:
+    iOS: "15.0"
+
+targets:
+  VKTunnel:
+    type: application
+    platform: iOS
+    sources: 
+      - VKTunnel
+    settings:
+      INFOPLIST_FILE: VKTunnel/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: com.vktunnel.app
+      GENERATE_INFOPLIST_FILE: NO
+    dependencies:
+      - target: PacketTunnel
+
+  PacketTunnel:
+    type: app-extension
+    platform: iOS
+    sources:
+      - PacketTunnel
+    settings:
+      INFOPLIST_FILE: PacketTunnel/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: com.vktunnel.app.packettunnel
+      GENERATE_INFOPLIST_FILE: NO
