@@ -16,7 +16,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      # 2. Быстрая установка XcodeGen без обновления тапов
+      # 2. Установка XcodeGen
       - name: Install XcodeGen
         run: brew install xcodegen || true
 
@@ -24,7 +24,11 @@ jobs:
       - name: Generate Xcode Project
         run: xcodegen generate
 
-      # 4. Сборка архива
+      # 4. Выбор Xcode 16 (совместимого с форматом 77)
+      - name: Select Xcode Version
+        run: sudo xcode-select -s /Applications/Xcode_16.0.app/Contents/Developer
+
+      # 5. Сборка архива
       - name: Build Archive
         run: |
           xcodebuild archive \
@@ -37,14 +41,14 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
 
-      # 5. Упаковка в .ipa
+      # 6. Упаковка в .ipa
       - name: Package into IPA
         run: |
           mkdir -p Payload
           cp -r build/VKTunnel.xcarchive/Products/Applications/VKTunnel.app Payload/
           zip -r VKTunnel-Unsigned.ipa Payload
 
-      # 6. Выгрузка готового файла
+      # 7. Выгрузка готового артефакта
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
