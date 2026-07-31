@@ -1,0 +1,54 @@
+name: Build iOS VPN IPA
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+      # 1. Получение кода из репозитория
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      # 2. Установка генератора проектов XcodeGen
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      # 3. Генерация VKTunnel.xcodeproj из project.yml
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      # 4. Выбор версии Xcode
+      - name: Select Xcode Version
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer
+
+      # 5. Сборка архива без требования подписи
+      - name: Build Archive
+        run: |
+          xcodebuild archive \
+            -project "VKTunnel.xcodeproj" \
+            -scheme "VKTunnel" \
+            -sdk iphoneos \
+            -configuration Release \
+            -archivePath build/VKTunnel.xcarchive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      # 6. Упаковка приложения и PlugIns расширения в .ipa
+      - name: Package into IPA
+        run: |
+          mkdir -p Payload
+          cp -r build/VKTunnel.xcarchive/Products/Applications/VKTunnel.app Payload/
+          zip -r VKTunnel-Unsigned.ipa Payload
+
+      # 7. Загрузка собранного .ipa файла
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: VKTunnel-Unsigned-IPA
+          path: VKTunnel-Unsigned.ipa
