@@ -1,7 +1,18 @@
+name: VKTunnel # <-- Обязательное поле в самом начале файла!
+
 targets:
+  # Ваш главный таргет приложения (пример)
+  VKTunnel:
+    type: application
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources: [VKTunnel]
+
+  # Таргет расширения
   PacketTunnel:
     type: app-extension
     platform: iOS
+    deploymentTarget: "15.0"
     sources: [PacketTunnel]
     info:
       path: PacketTunnel/Info.plist
