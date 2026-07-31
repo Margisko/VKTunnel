@@ -36,7 +36,8 @@ struct ContentView: View {
             // Первичная регистрация конфигурации туннеля в iOS
             if manager.protocolConfiguration == nil {
                 let providerProtocol = NETunnelProviderProtocol()
-                providerProtocol.providerBundleIdentifier = "com.vktunnel.app.packettunnel"
+                // ИСПРАВЛЕНО: Буквы P и T сделаны заглавными, как в project.yml
+                providerProtocol.providerBundleIdentifier = "com.vktunnel.app.PacketTunnel"
                 providerProtocol.serverAddress = "192.0.2.1"
                 
                 manager.protocolConfiguration = providerProtocol
